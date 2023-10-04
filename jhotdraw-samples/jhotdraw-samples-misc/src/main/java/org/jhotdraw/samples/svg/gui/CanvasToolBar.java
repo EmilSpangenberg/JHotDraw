@@ -34,6 +34,8 @@ import org.jhotdraw.text.ColorFormatter;
 import org.jhotdraw.formatter.JavaNumberFormatter;
 import org.jhotdraw.util.*;
 
+import dk.sdu.mmmi.featuretracer.lib.FeatureEntryPoint;
+
 /**
  * CanvasToolBar.
  *
@@ -47,6 +49,7 @@ public class CanvasToolBar extends AbstractToolBar {
     /**
      * Creates new instance.
      */
+    @FeatureEntryPoint(value = "canvas")
     public CanvasToolBar() {
         ResourceBundleUtil labels = ResourceBundleUtil.getBundle("org.jhotdraw.samples.svg.Labels");
         setName(labels.getString(getID() + ".toolbar"));

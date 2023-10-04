@@ -12,6 +12,8 @@ import org.jhotdraw.app.OSXApplication;
 import org.jhotdraw.app.SDIApplication;
 import org.jhotdraw.util.ResourceBundleUtil;
 
+import dk.sdu.mmmi.featuretracer.lib.FeatureEntryPoint;
+
 /**
  * Main entry point of the SVG sample application. Creates an {@link Application}
  * depending on the operating system we run, sets the {@link SVGApplicationModel}
@@ -21,12 +23,15 @@ import org.jhotdraw.util.ResourceBundleUtil;
  * @author Werner Randelshofer.
  * @version $Id$
  */
+
 public class Main {
 
     /**
      * Creates a new instance.
+    
      */
-    public static void main(String[] args) {
+    @FeatureEntryPoint(value = "")
+     public static void main(String[] args) {
         // Debug resource bundle
         ResourceBundleUtil.setVerbose(true);
         Application app;

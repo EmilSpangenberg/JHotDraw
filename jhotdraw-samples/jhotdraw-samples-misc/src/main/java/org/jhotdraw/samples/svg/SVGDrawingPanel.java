@@ -54,6 +54,8 @@ import org.jhotdraw.undo.UndoRedoManager;
 import org.jhotdraw.util.*;
 import org.jhotdraw.util.prefs.PreferencesUtil;
 
+import dk.sdu.mmmi.featuretracer.lib.FeatureEntryPoint;
+
 /**
  * JSVGDrawingAppletPanel.
  *
@@ -72,7 +74,7 @@ public class SVGDrawingPanel extends JPanel implements Disposable {
     public UndoRedoManager getUndoRedoManager() {
         return undoManager;
     }
-
+    @FeatureEntryPoint(value="setUndoManager")
     public void setUndoRedoManager(UndoRedoManager undo) {
         if (undoManager != null && getView().getDrawing() != null) {
             getView().getDrawing().removeUndoableEditListener(undoManager);

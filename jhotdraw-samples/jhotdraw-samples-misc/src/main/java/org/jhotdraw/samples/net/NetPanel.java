@@ -10,6 +10,8 @@ package org.jhotdraw.samples.net;
 import java.awt.*;
 import java.util.*;
 import javax.swing.*;
+
+import dk.sdu.mmmi.featuretracer.lib.FeatureEntryPoint;
 import org.jhotdraw.action.edit.CopyAction;
 import org.jhotdraw.action.edit.CutAction;
 import org.jhotdraw.action.edit.DuplicateAction;
@@ -110,7 +112,6 @@ public class NetPanel extends JPanel {
         view.setDrawing(drawing);
         drawing.addUndoableEditListener(undoManager);
     }
-
     public void setDrawing(Drawing d) {
         undoManager.discardAllEdits();
         view.getDrawing().removeUndoableEditListener(undoManager);

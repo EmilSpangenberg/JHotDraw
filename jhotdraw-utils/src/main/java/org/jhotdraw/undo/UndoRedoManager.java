@@ -12,6 +12,8 @@ import java.beans.*;
 import java.util.*;
 import javax.swing.*;
 import javax.swing.undo.*;
+
+import dk.sdu.mmmi.featuretracer.lib.FeatureEntryPoint;
 import org.jhotdraw.util.*;
 
 /**
@@ -205,6 +207,7 @@ public class UndoRedoManager extends UndoManager { //javax.swing.undo.UndoManage
     /**
      * Gets the undo action for use as an Undo menu item.
      */
+
     public Action getUndoAction() {
         return undoAction;
     }
@@ -252,6 +255,7 @@ public class UndoRedoManager extends UndoManager { //javax.swing.undo.UndoManage
      * The UndoRedoManager ignores all incoming UndoableEdit events,
      * while undo is in progress.
      */
+    @FeatureEntryPoint(value="undo")
     @Override
     public void undo()
             throws CannotUndoException {
@@ -269,6 +273,7 @@ public class UndoRedoManager extends UndoManager { //javax.swing.undo.UndoManage
      * The UndoRedoManager ignores all incoming UndoableEdit events,
      * while redo is in progress.
      */
+    @FeatureEntryPoint(value="redo")
     @Override
     public void redo()
             throws CannotUndoException {

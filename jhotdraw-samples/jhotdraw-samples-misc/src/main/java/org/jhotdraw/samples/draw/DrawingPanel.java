@@ -46,6 +46,8 @@ import org.jhotdraw.gui.action.ButtonFactory;
 import org.jhotdraw.undo.UndoRedoManager;
 import org.jhotdraw.util.*;
 
+import dk.sdu.mmmi.featuretracer.lib.FeatureEntryPoint;
+
 /**
  * DrawingPanel.
  *

@@ -7,6 +7,7 @@
  */
 package org.jhotdraw.action.edit;
 
+
 import java.awt.event.*;
 import java.beans.*;
 import javax.swing.*;
@@ -32,6 +33,8 @@ import org.jhotdraw.util.*;
  * @author Werner Randelshofer
  * @version $Id$
  */
+
+
 public class RedoAction extends AbstractViewAction {
 
     private static final long serialVersionUID = 1L;
@@ -52,7 +55,7 @@ public class RedoAction extends AbstractViewAction {
     /**
      * Creates a new instance.
      */
-    public RedoAction(Application app, View view) {
+        public RedoAction(Application app, View view) {
         super(app, view);
         labels.configureAction(this, ID);
     }
