@@ -12,6 +12,7 @@ import java.util.*;
 import javax.swing.undo.*;
 import org.jhotdraw.draw.*;
 import org.jhotdraw.util.ResourceBundleUtil;
+import dk.sdu.mmmi.featuretracer.lib.FeatureEntryPoint;
 
 /**
  * SendToBackAction.
@@ -27,6 +28,7 @@ public class SendToBackAction extends AbstractSelectedAction {
     /**
      * Creates a new instance.
      */
+    @FeatureEntryPoint(value="SendToBackAction")
     public SendToBackAction(DrawingEditor editor) {
         super(editor);
         ResourceBundleUtil labels
@@ -35,6 +37,7 @@ public class SendToBackAction extends AbstractSelectedAction {
         updateEnabledState();
     }
 
+    @FeatureEntryPoint(value="SendToBackAction")
     @Override
     public void actionPerformed(java.awt.event.ActionEvent e) {
         final DrawingView view = getView();

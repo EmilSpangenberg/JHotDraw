@@ -9,11 +9,7 @@
     <artifactId>jhotdraw-samples-misc</artifactId>
     <packaging>jar</packaging>
     <repositories>
-        <repository>
-            <id>github</id>
-            <name>GitHub external Packages</name>
-            <url>https://maven.pkg.github.com/sweat-tek/MavenRepository</url>
-        </repository>
+
     </repositories>
     <dependencies>
         <dependency>
@@ -83,7 +79,7 @@
                 <version>2.22.2</version>
                 <configuration>
                     <argLine>
-                        -javaagent:"C:\Users\Bruger\.m2\repository\org\aspectj\aspectjweaver\1.9.9\aspectjweaver-1.9.9.jar"
+                        -javaagent:"/Users/miransert/.m2/repository/org/aspectj/aspectjweaver/1.9.9/aspectjweaver-1.9.9.jar"
                         --add-opens java.base/java.lang=ALL-UNNAMED
                     </argLine>
                     <useSystemClassLoader>true</useSystemClassLoader>
