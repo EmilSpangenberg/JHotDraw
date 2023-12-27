@@ -14,25 +14,15 @@ import org.jhotdraw.draw.*;
 import org.jhotdraw.util.ResourceBundleUtil;
 import dk.sdu.mmmi.featuretracer.lib.FeatureEntryPoint;
 
-/**
- * ToFrontAction.
- *
- * @author Werner Randelshofer
- * @version $Id$
- */
 public class BringToFrontAction extends AbstractSelectedAction {
-
     private static final long serialVersionUID = 1L;
     public static final String ID = "edit.bringToFront";
+    private ResourceBundleUtil labels;
 
-    /**
-     * Creates a new instance.
-     */
     @FeatureEntryPoint(value="BringToFrontAction")
     public BringToFrontAction(DrawingEditor editor) {
         super(editor);
-        ResourceBundleUtil labels
-                = ResourceBundleUtil.getBundle("org.jhotdraw.draw.Labels");
+        labels = ResourceBundleUtil.getBundle("org.jhotdraw.draw.Labels");
         labels.configureAction(this, ID);
         updateEnabledState();
     }
@@ -43,13 +33,13 @@ public class BringToFrontAction extends AbstractSelectedAction {
         final DrawingView view = getView();
         final LinkedList<Figure> figures = new LinkedList<>(view.getSelectedFigures());
         bringToFront(view, figures);
-        fireUndoableEditHappened(new AbstractUndoableEdit() {
-            private static final long serialVersionUID = 1L;
+        fireUndoableEditHappened(createUndoableEdit(view, figures));
+    }
 
+    UndoableEdit createUndoableEdit(final DrawingView view, final LinkedList<Figure> figures) {
+        return new AbstractUndoableEdit() {
             @Override
             public String getPresentationName() {
-                ResourceBundleUtil labels
-                        = ResourceBundleUtil.getBundle("org.jhotdraw.draw.Labels");
                 return labels.getTextProperty(ID);
             }
 
@@ -64,7 +54,7 @@ public class BringToFrontAction extends AbstractSelectedAction {
                 super.undo();
                 SendToBackAction.sendToBack(view, figures);
             }
-        });
+        };
     }
 
     public static void bringToFront(DrawingView view, Collection<Figure> figures) {

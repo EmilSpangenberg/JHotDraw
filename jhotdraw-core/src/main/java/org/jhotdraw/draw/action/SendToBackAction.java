@@ -14,25 +14,15 @@ import org.jhotdraw.draw.*;
 import org.jhotdraw.util.ResourceBundleUtil;
 import dk.sdu.mmmi.featuretracer.lib.FeatureEntryPoint;
 
-/**
- * SendToBackAction.
- *
- * @author Werner Randelshofer
- * @version $Id$
- */
 public class SendToBackAction extends AbstractSelectedAction {
-
     private static final long serialVersionUID = 1L;
     public static final String ID = "edit.sendToBack";
+    private ResourceBundleUtil labels;
 
-    /**
-     * Creates a new instance.
-     */
     @FeatureEntryPoint(value="SendToBackAction")
     public SendToBackAction(DrawingEditor editor) {
         super(editor);
-        ResourceBundleUtil labels
-                = ResourceBundleUtil.getBundle("org.jhotdraw.draw.Labels");
+        labels = ResourceBundleUtil.getBundle("org.jhotdraw.draw.Labels");
         labels.configureAction(this, ID);
         updateEnabledState();
     }
@@ -43,13 +33,13 @@ public class SendToBackAction extends AbstractSelectedAction {
         final DrawingView view = getView();
         final LinkedList<Figure> figures = new LinkedList<>(view.getSelectedFigures());
         sendToBack(view, figures);
-        fireUndoableEditHappened(new AbstractUndoableEdit() {
-            private static final long serialVersionUID = 1L;
+        fireUndoableEditHappened(createUndoableEdit(view, figures));
+    }
 
+    UndoableEdit createUndoableEdit(final DrawingView view, final LinkedList<Figure> figures) {
+        return new AbstractUndoableEdit() {
             @Override
             public String getPresentationName() {
-                ResourceBundleUtil labels
-                        = ResourceBundleUtil.getBundle("org.jhotdraw.draw.Labels");
                 return labels.getTextProperty(ID);
             }
 
@@ -64,12 +54,12 @@ public class SendToBackAction extends AbstractSelectedAction {
                 super.undo();
                 BringToFrontAction.bringToFront(view, figures);
             }
-        });
+        };
     }
 
     public static void sendToBack(DrawingView view, Collection<Figure> figures) {
         Drawing drawing = view.getDrawing();
-        for (Figure figure : figures) { // XXX Shouldn't the figures be sorted here back to front?
+        for (Figure figure : figures) {
             drawing.sendToBack(figure);
         }
     }
