@@ -13,6 +13,8 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import javax.swing.JComponent;
 import javax.swing.text.*;
+
+import dk.sdu.mmmi.featuretracer.lib.FeatureEntryPoint;
 import org.jhotdraw.api.gui.EditableComponent;
 import org.jhotdraw.beans.WeakPropertyChangeListener;
 import org.jhotdraw.util.*;
@@ -69,6 +71,7 @@ public class DeleteAction extends TextAction {
     /**
      * Creates a new instance which acts on the currently focused component.
      */
+    @FeatureEntryPoint(value="DeleteActionnullTarget")
     public DeleteAction() {
         this(null, ID);
     }
@@ -79,6 +82,7 @@ public class DeleteAction extends TextAction {
      * @param target The target of the action. Specify null for the currently
      * focused component.
      */
+    @FeatureEntryPoint(value="DeleteActionJComponentTarget")
     public DeleteAction(JComponent target) {
         this(target, ID);
     }
@@ -89,6 +93,7 @@ public class DeleteAction extends TextAction {
      * @param target The target of the action. Specify null for the currently
      * focused component.
      */
+    @FeatureEntryPoint(value="DeleteAction")
     protected DeleteAction(JComponent target, String id) {
         super(id);
         this.target = target;
@@ -109,6 +114,7 @@ public class DeleteAction extends TextAction {
     }
 
     @Override
+    @FeatureEntryPoint(value="delete")
     public void actionPerformed(ActionEvent evt) {
         JComponent c = target;
         if (c == null && (KeyboardFocusManager.getCurrentKeyboardFocusManager().
