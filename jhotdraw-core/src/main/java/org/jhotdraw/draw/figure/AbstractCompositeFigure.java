@@ -42,6 +42,7 @@ public abstract class AbstractCompositeFigure
         implements CompositeFigure, DOMStorable {
 
     private static final long serialVersionUID = 1L;
+    /*
      * A Layouter determines how the children of the CompositeFigure
      * are laid out graphically.
      */
