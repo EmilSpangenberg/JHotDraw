@@ -13,6 +13,8 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import javax.swing.JComponent;
 import javax.swing.text.*;
+
+import dk.sdu.mmmi.featuretracer.lib.FeatureEntryPoint;
 import org.jhotdraw.api.gui.EditableComponent;
 import org.jhotdraw.beans.WeakPropertyChangeListener;
 import org.jhotdraw.util.*;
@@ -69,6 +71,7 @@ public class DeleteAction extends TextAction {
     /**
      * Creates a new instance which acts on the currently focused component.
      */
+    @FeatureEntryPoint(value="DeleteActionnullTarget")
     public DeleteAction() {
         this(null, ID);
     }
@@ -79,6 +82,7 @@ public class DeleteAction extends TextAction {
      * @param target The target of the action. Specify null for the currently
      * focused component.
      */
+    @FeatureEntryPoint(value="DeleteActionJComponentTarget")
     public DeleteAction(JComponent target) {
         this(target, ID);
     }
@@ -89,33 +93,36 @@ public class DeleteAction extends TextAction {
      * @param target The target of the action. Specify null for the currently
      * focused component.
      */
-    protected DeleteAction(JComponent target, String id) {
+    @FeatureEntryPoint(value="DeleteAction")
+    public DeleteAction(JComponent target, String id) {
         super(id);
         this.target = target;
         if (target != null) {
-            // Register with a weak reference on the JComponent.
-            propertyHandler = new PropertyChangeListener() {
-                @Override
-                public void propertyChange(PropertyChangeEvent evt) {
-                    if ("enabled".equals(evt.getPropertyName())) {
-                        setEnabled((Boolean) evt.getNewValue());
-                    }
-                }
-            };
-            target.addPropertyChangeListener(new WeakPropertyChangeListener(propertyHandler));
+            RegisterWeakRef(target);
         }
         ResourceBundleUtil labels = ResourceBundleUtil.getBundle("org.jhotdraw.action.Labels");
         labels.configureAction(this, ID);
     }
 
+    private void RegisterWeakRef(JComponent target) {
+        propertyHandler = new PropertyChangeListener() {
+            @Override
+            public void propertyChange(PropertyChangeEvent evt) {
+                if ("enabled".equals(evt.getPropertyName())) {
+                    setEnabled((Boolean) evt.getNewValue());
+                }
+            }
+        };
+        target.addPropertyChangeListener(new WeakPropertyChangeListener(propertyHandler));
+    }
+
     @Override
+    @FeatureEntryPoint(value="DeleteActionPerformed")
     public void actionPerformed(ActionEvent evt) {
         JComponent c = target;
-        if (c == null && (KeyboardFocusManager.getCurrentKeyboardFocusManager().
-                getPermanentFocusOwner() instanceof JComponent)) {
-            c = (JComponent) KeyboardFocusManager.getCurrentKeyboardFocusManager().
-                    getPermanentFocusOwner();
-        }
+
+        c = ActionUtility.getJComponent(c);
+
         if (c != null && c.isEnabled()) {
             if (c instanceof EditableComponent) {
                 ((EditableComponent) c).delete();
@@ -134,17 +141,7 @@ public class DeleteAction extends TextAction {
         boolean beep = true;
         if ((c != null) && (c.isEditable())) {
             try {
-                javax.swing.text.Document doc = c.getDocument();
-                Caret caret = c.getCaret();
-                int dot = caret.getDot();
-                int mark = caret.getMark();
-                if (dot != mark) {
-                    doc.remove(Math.min(dot, mark), Math.abs(dot - mark));
-                    beep = false;
-                } else if (dot < doc.getLength()) {
-                    doc.remove(dot, 1);
-                    beep = false;
-                }
+                beep = deleteTextSelectionOrNextCharacter(c, beep);
             } catch (BadLocationException bl) {
                 // allowed empty
             }
@@ -153,4 +150,22 @@ public class DeleteAction extends TextAction {
             Toolkit.getDefaultToolkit().beep();
         }
     }
+
+    public static boolean deleteTextSelectionOrNextCharacter(JTextComponent c, boolean beep) throws BadLocationException {
+        Document doc = c.getDocument();
+        Caret caret = c.getCaret();
+        int dot = caret.getDot();
+        int mark = caret.getMark();
+
+        if (dot != mark) {
+            doc.remove(Math.min(dot, mark), Math.abs(dot - mark));
+            beep = false;
+        } else if (dot < doc.getLength()) {
+            doc.remove(dot, 1);
+            beep = false;
+        }
+        return beep;
+    }
+
+
 }

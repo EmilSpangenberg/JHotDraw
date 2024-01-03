@@ -18,6 +18,7 @@
  */
 package org.jhotdraw.draw;
 
+import dk.sdu.mmmi.featuretracer.lib.FeatureEntryPoint;
 import org.jhotdraw.draw.figure.Figure;
 import java.awt.Color;
 import java.awt.Graphics;
@@ -958,7 +959,7 @@ public abstract class AbstractDrawingView implements DrawingView, EditableCompon
                 ResourceBundleUtil labels = ResourceBundleUtil.getBundle("org.jhotdraw.draw.Labels");
                 return labels.getString("edit.delete.text");
             }
-
+            @FeatureEntryPoint(value="Undo")
             @Override
             public void undo() throws CannotUndoException {
                 super.undo();
@@ -970,7 +971,7 @@ public abstract class AbstractDrawingView implements DrawingView, EditableCompon
                 }
                 addToSelection(deletedFigures);
             }
-
+            @FeatureEntryPoint(value="Redo")
             @Override
             public void redo() throws CannotRedoException {
                 super.redo();
