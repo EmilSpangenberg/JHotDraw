@@ -76,8 +76,9 @@ public class DuplicateAction extends AbstractSelectionAction {
     @Override
     public void actionPerformed(ActionEvent evt) {
         JComponent c = target;
-        if (c == null && (KeyboardFocusManager.getCurrentKeyboardFocusManager().
-                getPermanentFocusOwner() instanceof JComponent)) {
+        boolean isFOcusOwnerAJCOmponent = KeyboardFocusManager.getCurrentKeyboardFocusManager()
+                .getPermanentFocusOwner() instanceof JComponent;
+        if (c==null && isFOcusOwnerAJCOmponent) {
             c = (JComponent) KeyboardFocusManager.getCurrentKeyboardFocusManager().
                     getPermanentFocusOwner();
         }
