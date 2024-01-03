@@ -14,6 +14,8 @@ import javax.swing.text.*;
 import org.jhotdraw.api.gui.EditableComponent;
 import org.jhotdraw.util.*;
 
+import dk.sdu.mmmi.featuretracer.lib.FeatureEntryPoint;
+
 /**
  * Selects all items.
  * <p>
@@ -27,10 +29,9 @@ import org.jhotdraw.util.*;
  * If you want this behavior in your application, you have to create an action
  * with this ID and put it in your {@code ApplicationModel} in method
  * {@link org.jhotdraw.app.ApplicationModel#initApplication}.
- *
+ * <p>
  * <hr>
  * <b>Design Patterns</b>
- *
  * <p>
  * <em>Framework</em><br>
  * The interfaces and classes listed below work together:
@@ -54,45 +55,51 @@ public class SelectAllAction extends AbstractSelectionAction {
     /**
      * Creates a new instance which acts on the currently focused component.
      */
-    public SelectAllAction() {
-        this(null);
-    }
 
     /**
      * Creates a new instance which acts on the specified component.
      *
      * @param target The target of the action. Specify null for the currently
-     * focused component.
+     *               focused component.
      */
-    public SelectAllAction(JComponent target) {
+    @FeatureEntryPoint(value = "SelectAll")
+    public SelectAllAction(JComponent target, ResourceBundleUtil labels) {
         super(target);
-        ResourceBundleUtil labels = ResourceBundleUtil.getBundle("org.jhotdraw.action.Labels");
-        labels.configureAction(this, ID);
+        configureAction(labels);
     }
 
+    @FeatureEntryPoint(value = "SelectAllActionPerformed")
     @Override
     public void actionPerformed(ActionEvent evt) {
-        JComponent c = target;
-        if (c == null && (KeyboardFocusManager.getCurrentKeyboardFocusManager().
-                getPermanentFocusOwner() instanceof JComponent)) {
-            c = (JComponent) KeyboardFocusManager.getCurrentKeyboardFocusManager().
-                    getPermanentFocusOwner();
-        }
+        JComponent c = getTargetComponent();
         if (c != null && c.isEnabled()) {
             if (c instanceof EditableComponent) {
                 ((EditableComponent) c).selectAll();
             } else if (c instanceof JTextComponent) {
                 ((JTextComponent) c).selectAll();
             } else {
-                c.getToolkit().beep();
+                Toolkit.getDefaultToolkit().beep();
             }
         }
     }
 
     @Override
     protected void updateEnabled() {
-        if (target != null) {
-            setEnabled(target.isEnabled());
+        setEnabled(getTargetComponent() != null && getTargetComponent().isEnabled());
+    }
+
+    private void configureAction(ResourceBundleUtil labels) {
+        labels.configureAction(this, ID);
+    }
+
+
+    public JComponent getTargetComponent() {
+        JComponent c = target;
+        if (c == null && (KeyboardFocusManager.getCurrentKeyboardFocusManager().
+                getPermanentFocusOwner() instanceof JComponent)) {
+            c = (JComponent) KeyboardFocusManager.getCurrentKeyboardFocusManager().
+                    getPermanentFocusOwner();
         }
+        return c;
     }
 }
