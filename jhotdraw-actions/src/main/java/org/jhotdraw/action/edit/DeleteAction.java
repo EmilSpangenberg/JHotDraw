@@ -94,7 +94,7 @@ public class DeleteAction extends TextAction {
      * focused component.
      */
     @FeatureEntryPoint(value="DeleteAction")
-    protected DeleteAction(JComponent target, String id) {
+    public DeleteAction(JComponent target, String id) {
         super(id);
         this.target = target;
         if (target != null) {
@@ -122,13 +122,6 @@ public class DeleteAction extends TextAction {
         JComponent c = target;
 
         c = ActionUtility.getJComponent(c);
-        /*
-        if (c == null && (KeyboardFocusManager.getCurrentKeyboardFocusManager().
-                getPermanentFocusOwner() instanceof JComponent)) {
-            c = (JComponent) KeyboardFocusManager.getCurrentKeyboardFocusManager().
-                    getPermanentFocusOwner();
-        }
-         */
 
         if (c != null && c.isEnabled()) {
             if (c instanceof EditableComponent) {
@@ -158,7 +151,7 @@ public class DeleteAction extends TextAction {
         }
     }
 
-    private static boolean deleteTextSelectionOrNextCharacter(JTextComponent c, boolean beep) throws BadLocationException {
+    public static boolean deleteTextSelectionOrNextCharacter(JTextComponent c, boolean beep) throws BadLocationException {
         Document doc = c.getDocument();
         Caret caret = c.getCaret();
         int dot = caret.getDot();
@@ -173,4 +166,6 @@ public class DeleteAction extends TextAction {
         }
         return beep;
     }
+
+
 }
