@@ -335,7 +335,7 @@ public class DefaultDrawingView
         return null;
     }
 
-    public void setEmptyDrawingMessage(String newValue) {
+/*    public void setEmptyDrawingMessage(String newValue) {
         String oldValue = (emptyDrawingLabel == null) ? null : emptyDrawingLabel.getText();
         if (newValue == null) {
             emptyDrawingLabel = null;
@@ -346,7 +346,7 @@ public class DefaultDrawingView
         firePropertyChange("emptyDrawingMessage", oldValue, newValue);
         repaint();
     }
-
+*/
     public String getEmptyDrawingMessage() {
         return (emptyDrawingLabel == null) ? null : emptyDrawingLabel.getText();
     }
